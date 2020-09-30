@@ -76,7 +76,6 @@ function nextSong(next){
     songIndex = 0;
   }
   loadSong(songs[songIndex]);
-  console.log(songIndex, next, songs.length - 1);
   playSong();
 }
 
@@ -106,11 +105,24 @@ function updateProgressBar(e) {
   }
 }
 
+// Set Progress Bar
+function setProgressBar(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+  const { duration } = music;
+  music.currentTime = (clickX / width) * duration;
+}
+
 //Event Listeners
 prevBtn.addEventListener('click', () => {
   nextSong(true)
 });
+music.addEventListener('ended', () => {
+  nextSong(false)
+});
 nextBtn.addEventListener('click', () => {
   nextSong(false)
 });
+
 music.addEventListener('timeupdate', updateProgressBar);
+progressContainer.addEventListener('click', setProgressBar);
